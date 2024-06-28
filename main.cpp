@@ -5,8 +5,8 @@
 #include <limits>
 #include <unordered_set>
 #include <conio.h>
-#include <cstdlib> // For system("cls") to clear the screen
-#include <windows.h> // For Windows API functions
+#include <cstdlib> //Para clear sa screen
+#include <windows.h> //Windows API functions
 #include <cctype>
 #include <algorithm>
 
@@ -33,25 +33,25 @@ string encrypt(const string& text, int shift) {
     return encryptedText;
 }
 
-const string accountDirectory = "C:\\logs\\"; // Directory to store account data
+const string accountDirectory = "C:\\logs\\"; //Butanganan sa mga data
 
-// Function to check if a directory exists
+//Pang check kung naa ang directory
 bool directoryExists(const string& path) {
     DWORD fileAttributes = GetFileAttributesA(path.c_str());
     return (fileAttributes != INVALID_FILE_ATTRIBUTES && (fileAttributes & FILE_ATTRIBUTE_DIRECTORY));
 }
 
-// Function to create a directory
+//Pang himo ug bag o na directory
 bool createDirectory(const string& path) {
     return CreateDirectoryA(path.c_str(), nullptr);
 }
 
-// Function to clear the screen
+//Pang clear sa screen
 void clearScreen() {
     system("cls");
 }
 
-// Function to display the main menu
+//Main Menu
 void displayMainMenu() {
     cout << "=== Notes Manager ===" << endl;
     cout << "1. Register" << endl;
@@ -60,10 +60,10 @@ void displayMainMenu() {
     cout << "Please input the number of your choice: ";
 }
 
-// Define a global unordered set to store existing account names
+//Global unordered set na butanganan sa account names
 unordered_set<string> existingAccountNames;
 
-// Function to display the account registration page
+//Pang display sa Account Registration Page
 void displayAccountRegistration() {
     clearScreen();
     cout << "=== Account Registration ===" << endl;
@@ -71,14 +71,14 @@ void displayAccountRegistration() {
     string accountName;
     string accountPassword;
 
-    // Input and validate account name
+    //Pang input tas validate sa account name
     while (true) {
         cout << "Please input the account name: ";
         getline(cin, accountName);
 
-        // Check if the name meets the requirements
+        //Pang check if okay na ang name
         if (accountName.length() >= 3 && accountName.find_first_not_of("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-") == string::npos) {
-            // Check if the name is already taken
+            //Pang check if na gamit na ang name
             if (existingAccountNames.find(accountName) != existingAccountNames.end()) {
                 cout << "Account name already taken. Please choose a different name." << endl;
             } else {
@@ -90,26 +90,26 @@ void displayAccountRegistration() {
         }
     }
 
-    // Input and validate account password
+    //Pang input tas validate sa account password
     while (true) {
         cout << "Please input account password: ";
         getline(cin, accountPassword);
 
-        // Check if the password meets the requirements
+        //Pang check if okay na ang password
         if (accountPassword.length() >= 3 && accountPassword.find_first_not_of("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ") == string::npos)
             break;
         else
             cout << "Invalid account password. Account password should have at least 3 characters and contain only letters, numbers, and spaces." << endl;
     }
 
-    // Encrypt the account password
+    //Pang tago or encrypt sa password
     string encryptedPassword = encrypt(accountPassword, SHIFT);
 
-    // Create the account directory if it doesn't exist
+    //Pang himo ug account directory kung wala
     if (!directoryExists(accountDirectory))
         createDirectory(accountDirectory);
 
-    // Store account data in a file
+    //Pang butang sa account data sa file
     string accountFile = accountDirectory + accountName + ".txt";
     ofstream outfile(accountFile);
 
@@ -128,10 +128,10 @@ void displayAccountRegistration() {
     cin.ignore();
 }
 
-// Function to display the log in page
+//Para display sa Log in Page
 void displayLogInPage();
 
-// Function to handle the main menu choices
+//Para sa choices sa Main Menu
 void handleMainMenuChoice(int choice) {
     switch (choice) {
         case 1:
@@ -151,7 +151,7 @@ void handleMainMenuChoice(int choice) {
     }
 }
 
-// Function to add notes
+//Para add sa Notes
 void addNotes(const string& accountName) {
     clearScreen();
     cout << "You may now write your notes." << endl;
@@ -174,7 +174,7 @@ void addNotes(const string& accountName) {
     clearScreen();
 }
 
-// Function to view notes
+//Para view sa Notes
 void viewNotes(const string& accountName) {
     clearScreen();
     string notesFile = accountDirectory + accountName + "_notes.txt";
@@ -200,7 +200,7 @@ void viewNotes(const string& accountName) {
     cin.ignore();
 }
 
-// Function to edit a note
+//Para edit sa Notes
 void editNote(const string& accountName) {
     clearScreen();
     string notesFile = accountDirectory + accountName + "_notes.txt";
@@ -252,7 +252,7 @@ void editNote(const string& accountName) {
     cin.ignore();
 }
 
-// Function to delete a note
+//Para delete sa Notes
 void deleteNote(const string& accountName) {
     clearScreen();
     string notesFile = accountDirectory + accountName + "_notes.txt";
@@ -297,7 +297,7 @@ void deleteNote(const string& accountName) {
     cin.ignore();
 }
 
-// Function to display the log in page
+//Para display sa Log in Page
 void displayLogInPage() {
     clearScreen();
     cout << "=== Log In ===" << endl;
@@ -311,10 +311,10 @@ void displayLogInPage() {
     cout << "Please input the account password: ";
     getline(cin, accountPassword);
 
-    // Encrypt the entered password
+    //Pang tago sa password na gi input
     string encryptedPassword = encrypt(accountPassword, SHIFT);
 
-    // Check if the account exists and the password matches
+    //Pang check if ni exist ang account
     string accountFile = accountDirectory + accountName + ".txt";
     ifstream infile(accountFile);
 
@@ -327,7 +327,7 @@ void displayLogInPage() {
 
         infile.close();
 
-        // Extract the actual account name and password from the stored strings
+        //Pang kuha sa name ug password sa user
         storedAccountName = storedAccountName.substr(storedAccountName.find(": ") + 2);
         storedPassword = storedPassword.substr(storedPassword.find(": ") + 2);
 
@@ -389,7 +389,7 @@ int main() {
     do {
         displayMainMenu();
         cin >> choice;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore the newline character
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); //Pang ignore sa newline character
         handleMainMenuChoice(choice);
     } while (choice != 3);
 
