@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1719459580 source:c:\users\i love my self\desktop\c++\appdev\main.cpp
+	<iostream>
+	<vector>
+	<fstream>
+	<string>
+	<limits>
+	<unordered_set>
+	<conio.h>
+	<cstdlib>
+	<windows.h>
+	<cctype>
+	<algorithm>
+
